@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bingo Card</title>
+    <title>Bingo game</title>
     <link rel="stylesheet" href="card.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="bingo.js"></script>
+
 </head>
 
 <body>
@@ -17,13 +18,35 @@
         <div id="roulette" class="roulette"></div>
 
         <div class="button-wrap">
-            <button id="button" class="button">START</button>
+            <button id="start" class="button">START</button>
+            <button id="reset" class="reset-btn">RESET</button>
         </div>
 
         <ul id="number" class="number"></ul>
 
     </div>
 
+    <!-- <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let socket = io();
+
+        let startBtn = document.getElementById("start");
+        let result = document.getElementsByTagName('li');
+        let backNumbers = document.getElementById("number");
+        console.log(result);
+
+        startBtn.addEventListener("click", function (e) {
+            if (result.value) {
+                socket.emit("result", result.value);
+            };
+        });
+
+        socket.on("result", function (number) {
+            let item = document.createElement("li");
+            item.textContent = number;
+            backNumbers.appendChild(item);
+        });
+    </script> -->
 </body>
 
 </html>

@@ -1,39 +1,59 @@
 $(function () {
-  // * * *  1〜75までの配列を作る
-  const max = 75,
-    bingo = [];
+  "use strict";
+  let max = 75,
+    bingo = [],
+    backNumber = [];
 
-  for (var i = 1; i <= max; i++) {
-    bingo.push(i);
+  function list(num) {
+    $("#number").append($("<li>").addClass("centering").text(num));
   }
+
+  if (localStorage.hasOwnProperty("num")) {
+    backNumber = JSON.parse(localStorage.getItem("num"));
+  }
+
+  for (let i = 1; i <= max; i++) {
+    if (backNumber.indexOf(i) === -1) {
+      bingo.push(i);
+    }
+  }
+
+  backNumber.forEach((num) => {
+    list(num);
+  });
 
   let timer, random;
 
-  $("#button").on("click", function () {
-    // * * *  ボタンをおしたらスタートがストップになる
+  $("#start").on("click", function () {
     if ($(this).text() == "START") {
       $(this).text("STOP");
 
-      // * * *  丸の中の数字がぐるぐる回りだす
-      timer = setInterval(function () {
-        // * * *  数字をはランダム
+      timer = setInterval(() => {
         random = Math.floor(Math.random() * bingo.length);
         $("#roulette").text(bingo[random]);
       }, 50);
     } else {
-      // * * *  ストップボタンを押したら文字がスタートに戻る
       $(this).text("START");
-
-      // * * *  ストップのボタンを押したら数字が止まる
       clearInterval(timer);
 
-      // * * *  結果を抽選から外す
       let result = bingo[random];
       bingo.splice(random, 1);
 
-      // * * *  止まった数字が一覧に表示される
-      $("#number").append($("<li>").text(result));
-      $("#number li").addClass("centering");
+      list(result);
+      backNumber.push(result);
+      localStorage.setItem("num", JSON.stringify(backNumber));
+    }
+  });
+
+  $("#reset").on("click", function () {
+    localStorage.clear();
+    $("#number").empty();
+    backNumber = [];
+
+    for (let i = 1; i <= max; i++) {
+      if (backNumber.indexOf(i) === -1) {
+        bingo.push(i);
+      }
     }
   });
 });
